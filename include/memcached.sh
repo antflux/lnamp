@@ -26,8 +26,8 @@ if [ -d "$memcached_install_dir/include/memcached" ];then
     cd ..
     rm -rf memcached-$memcached_version
     ln -s $memcached_install_dir/bin/memcached /usr/bin/memcached
-    [ "$OS" == 'CentOS' ] && { /bin/cp ../init.d/Memcached-init-CentOS /etc/init.d/memcached; chkconfig --add memcached; chkconfig memcached on; }
-    [[ $OS =~ ^Ubuntu$|^Debian$ ]] && { /bin/cp ../init.d/Memcached-init-Ubuntu /etc/init.d/memcached; update-rc.d memcached defaults; }
+    [ "$OS" == 'CentOS' ] && { /bin/cp ../init.d/Memcached-init-CentOS /etc/init.d/memcached; chmod +x /etc/init.d/memcached;  chkconfig --add memcached; chkconfig memcached on; }
+    [[ $OS =~ ^Ubuntu$|^Debian$ ]] && { /bin/cp ../init.d/Memcached-init-Ubuntu /etc/init.d/memcached; chmod +x /etc/init.d/memcached; update-rc.d memcached defaults; }
     sed -i "s@/usr/local/memcached@$memcached_install_dir@g" /etc/init.d/memcached
     [ -n "`grep 'CACHESIZE=' /etc/init.d/memcached`" ] && sed -i "s@^CACHESIZE=.*@CACHESIZE=`expr $Mem / 8`@" /etc/init.d/memcached
     [ -n "`grep 'start_instance default 256;' /etc/init.d/memcached`" ] && sed -i "s@start_instance default 256;@start_instance default `expr $Mem / 8`;@" /etc/init.d/memcached

@@ -40,6 +40,7 @@ if [ -f "src/redis-server" ];then
     [ $? -ne 0 ] && useradd -M -s /sbin/nologin redis
     chown -R redis:redis $redis_install_dir/var
     /bin/cp ../init.d/Redis-server-init /etc/init.d/redis-server
+    chmod +x /etc/init.d/redis-server;
     if [ "$OS" == 'CentOS' ];then
         src_url=http://mirrors.linuxeye.com/oneinstack/src/start-stop-daemon.c && Download_src
         cc start-stop-daemon.c -o /sbin/start-stop-daemon
